@@ -3,6 +3,7 @@ import { Button } from "../components/ui/button";
 import { useGeolocation } from "../hooks/use-geolocation";
 import WeatherSkeleton from "../components/loading-skeleton";
 import { Alert, AlertDescription, AlertTitle } from "../components/ui/alert";
+import { useForecastQuery, useReverseGeocodeQuery, useWeatherQuery } from "../hooks/use-weather";
 
 const WeatherDashboard = () => {
   const {
@@ -12,7 +13,11 @@ const WeatherDashboard = () => {
     isLoading: locationLoading,
   } = useGeolocation();
 
-  console.log(coordinates);
+
+
+  const locationQuery = useReverseGeocodeQuery(coordinates);
+  const forecastQuery = useForecastQuery(coordinates);
+  const weatherQuery = useWeatherQuery(coordinates);
 
   const handleRefresh = () => {
     getLocation();

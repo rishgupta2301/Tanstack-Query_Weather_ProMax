@@ -8,11 +8,13 @@ class WeatherAPI{
             ...params,
         })
 
-        return `${endpoint}/${searchParams.toString()}`;
+        // console.log("endpoint-",endpoint);
+        return `${endpoint}?${searchParams.toString()}`;
     }
 
-    private async fethData<T>(url:string):Promise<T>{
+    private async fetchData<T>(url:string):Promise<T>{
 
+        // console.log(url)
         const response = await fetch(url);
 
         if(!response.ok){
@@ -30,7 +32,7 @@ class WeatherAPI{
             limit:1,
         });
 
-        return this.fethData<WeatherData>(url);
+        return this.fetchData<WeatherData>(url);
     }
 
     async getForecast({lat,lon}:Coordinates):Promise<ForecastData>{
@@ -40,17 +42,18 @@ class WeatherAPI{
             units: API_CONFIG.DEFAULT_PARAMS.units
         });
 
-        return this.fethData<ForecastData>(url);
+        return this.fetchData<ForecastData>(url);
     }
 
     async reverseGeocode({lat,lon}:Coordinates):Promise<GeocodingResponse[]>{
         const url = this.createURL(`${API_CONFIG.GEO}/reverse`, {
             lat: lat.toString(),
             lon: lon.toString(),
-            units: API_CONFIG.DEFAULT_PARAMS.units
+            limit:"1",
         });
 
-        return this.fethData<GeocodingResponse[]>(url);
+        console.log("url",url)
+        return this.fetchData<GeocodingResponse[]>(url);
     }
 }
 
